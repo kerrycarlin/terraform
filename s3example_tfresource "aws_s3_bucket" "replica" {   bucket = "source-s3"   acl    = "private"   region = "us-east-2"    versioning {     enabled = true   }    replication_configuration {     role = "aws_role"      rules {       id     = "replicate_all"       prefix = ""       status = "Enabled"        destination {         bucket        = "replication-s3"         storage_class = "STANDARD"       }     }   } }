@@ -1,0 +1,24 @@
+resource "aws_s3_bucket" "replica" {
+  bucket = "source-s3"
+  acl    = "private"
+  region = "us-east-2"
+
+  versioning {
+    enabled = true
+  }
+
+  replication_configuration {
+    role = "aws_role"
+
+    rules {
+      id     = "replicate_all"
+      prefix = ""
+      status = "Enabled"
+
+      destination {
+        bucket        = "replication-s3"
+        storage_class = "STANDARD"
+      }
+    }
+  }
+}
